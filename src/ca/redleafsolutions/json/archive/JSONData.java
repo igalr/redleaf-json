@@ -1,4 +1,4 @@
-package ca.redleafsolutions.json;
+package ca.redleafsolutions.json.archive;
 
 import java.util.Collection;
 import java.util.Map;

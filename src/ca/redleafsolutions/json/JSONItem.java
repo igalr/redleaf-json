@@ -17,6 +17,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.XML;
 
+import ca.redleafsolutions.json.archive.JSONValidationException;
+
 /*
 import org.json.JSONArray;
 import org.json.JSONException;

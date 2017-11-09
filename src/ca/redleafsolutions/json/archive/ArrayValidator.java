@@ -1,6 +1,9 @@
-package ca.redleafsolutions.json;
+package ca.redleafsolutions.json.archive;
 
 import org.json.JSONArray;
+
+import ca.redleafsolutions.json.JSONItem;
+import ca.redleafsolutions.json.JSONItem.Array;
 
 public class ArrayValidator<T> extends JSONElementValidator {
 	@Override

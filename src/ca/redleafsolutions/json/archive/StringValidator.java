@@ -1,4 +1,4 @@
-package ca.redleafsolutions.json;
+package ca.redleafsolutions.json.archive;
 
 public class StringValidator extends JSONElementValidator {
 	@Override

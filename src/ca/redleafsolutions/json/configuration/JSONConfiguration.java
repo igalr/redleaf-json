@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.Set;
 
 import ca.redleafsolutions.json.JSONItem;
-import ca.redleafsolutions.json.JSONValidationException;
+import ca.redleafsolutions.json.archive.JSONValidationException;
 
 public class JSONConfiguration {
 	private PersistentDataStore datastore;

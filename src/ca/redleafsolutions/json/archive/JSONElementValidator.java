@@ -1,4 +1,4 @@
-package ca.redleafsolutions.json;
+package ca.redleafsolutions.json.archive;
 
 abstract public class JSONElementValidator {
 	protected boolean optional = true;

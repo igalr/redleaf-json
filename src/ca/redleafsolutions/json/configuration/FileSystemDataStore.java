@@ -6,7 +6,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import ca.redleafsolutions.json.JSONItem;
-import ca.redleafsolutions.json.JSONValidationException;
+import ca.redleafsolutions.json.archive.JSONValidationException;
 
 public class FileSystemDataStore implements PersistentDataStore {
 	private File root;

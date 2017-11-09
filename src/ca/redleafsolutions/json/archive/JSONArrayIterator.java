@@ -1,10 +1,11 @@
-package ca.redleafsolutions.json;
+package ca.redleafsolutions.json.archive;
 
 import java.util.Iterator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
+@Deprecated
 public class JSONArrayIterator implements Iterator<Object> {
 	private JSONArray array;
 	private int index;
