@@ -104,6 +104,13 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable2 {
 		jarr.put (json);
 		return jarr;
 	}
+	
+	public static JSONItem fromMap (Map<String, ? extends java.lang.Object> map) {
+		return new JSONItem.Object(map);
+	}
+	public static JSONItem fromList (List<? extends java.lang.Object> list) {
+		return new JSONItem.Array(list);
+	}
 
 	public boolean isObject () {
 		return false;
@@ -338,7 +345,7 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable2 {
 			this.map = new TreeMap<> ();
 		}
 
-		public Object (Map<?, ?> map) {
+		private Object (Map<?, ?> map) {
 			this.map = new TreeMap<> ();
 			for (java.lang.Object okey:map.keySet ()) {
 				String key = (String)okey;
@@ -467,7 +474,7 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable2 {
 			list = new LinkedList<java.lang.Object> ();
 		}
 
-		public Array (List<?> list) {
+		private Array (List<?> list) {
 			this ();
 			for (java.lang.Object value:list) {
 				this.list.add (denormalize (value));
