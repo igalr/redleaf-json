@@ -605,27 +605,6 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable2 {
 		}
 	}
 
-	// FIXME this part must be removed when JSONItem fully integrated
-	//	protected abstract java.lang.Object toJSONElement ();
-	//
-	//	private static java.lang.Object item2JSONObject (JSONItem item) throws JSONValidationException {
-	//		for (java.lang.Object okey: item.listKeys ()) {
-	//			String key = okey.toString ();
-	//			java.lang.Object o = item.get (key);
-	//			if (o instanceof JSONItem) {
-	//				item.put (key, item2JSONObject ((JSONItem)o));
-	//			} else if (o instanceof JSONObject) {
-	//				item.put (key, o);
-	//			} else if (o instanceof JSONArray) {
-	//				item.put (key, o);
-	//			} else if (o instanceof JSONWritable2) {
-	//				JSONItem json = ((JSONWritable2)o).toJSON ();
-	//				item.put (key, item2JSONObject (json));
-	//			}
-	//		}
-	//		return item;
-	//	}
-
 	protected int numericIndex (String key) throws NumberFormatException {
 		try {
 			return Integer.parseInt (key);
