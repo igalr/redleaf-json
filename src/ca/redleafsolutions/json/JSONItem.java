@@ -88,7 +88,7 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable2 {
 	public static JSONItem fromFile (File file) throws JSONValidationException, IOException {
 		return parse (new String (Files.readAllBytes (Paths.get (file.toURI ()))));
 	}
-	
+
 	public static JSONItem fromXML (String xmlstr) throws JSONValidationException {
 		try {
 			return new JSONItem.Object (XML.toJSONObject (xmlstr));
@@ -104,12 +104,13 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable2 {
 		jarr.put (json);
 		return jarr;
 	}
-	
+
 	public static JSONItem fromMap (Map<String, ? extends java.lang.Object> map) {
-		return new JSONItem.Object(map);
+		return new JSONItem.Object (map);
 	}
+
 	public static JSONItem fromList (List<? extends java.lang.Object> list) {
-		return new JSONItem.Array(list);
+		return new JSONItem.Array (list);
 	}
 
 	public boolean isObject () {
@@ -271,58 +272,42 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable2 {
 	}
 
 	/*
-		private IShellDate _getDate (String key, java.lang.Object o) throws JSONValidationException {
-			if (o instanceof Long) {
-				return new IShellDate ((long)o);
-			}
-	
-			if (o instanceof String) {
-				DateFormat df = new SimpleDateFormat ();
-				try {
-					return new IShellDate (df.parse ((String)o));
-				} catch (ParseException e) {
-					throw new JSONValidationException.IllegalValue (key, o.toString ());
-				}
-			}
-	
-			throw new JSONValidationException.TypeMismatch ("String or number", o.getClass ().getSimpleName ());
-		}
-	
-		public IShellDate getDate (String key) throws JSONValidationException {
-			return _getDate (key, get (key));
-		}
-	
-		@IShellInvisible
-		public IShellDate getDate (int index) throws JSONValidationException {
-			return _getDate ("" + index, get (index));
-		}
-	
-		private IShellDate _getDateFormatted (String key, java.lang.Object o, String format) throws JSONValidationException {
-			if (o instanceof Long) {
-				return new IShellDate ((long)o);
-			}
-	
-			if (o instanceof String) {
-				DateFormat df = new SimpleDateFormat (format);
-				try {
-					return new IShellDate (df.parse ((String)o));
-				} catch (ParseException e) {
-					throw new JSONValidationException.IllegalValue (key, o.toString ());
-				}
-			}
-	
-			throw new JSONValidationException.TypeMismatch ("String or number", o.getClass ().getSimpleName ());
-		}
-	
-		public IShellDate getDateFormatted (String key, String format) throws JSONValidationException {
-			return _getDateFormatted (key, get (key), format);
-		}
-	
-		@IShellInvisible
-		public IShellDate getDateFormatted (int index, String format) throws JSONValidationException {
-			return _getDateFormatted ("" + index, get (index), format);
-		}
-	*/
+	 * private IShellDate _getDate (String key, java.lang.Object o) throws
+	 * JSONValidationException { if (o instanceof Long) { return new IShellDate
+	 * ((long)o); }
+	 * 
+	 * if (o instanceof String) { DateFormat df = new SimpleDateFormat (); try {
+	 * return new IShellDate (df.parse ((String)o)); } catch (ParseException e) {
+	 * throw new JSONValidationException.IllegalValue (key, o.toString ()); } }
+	 * 
+	 * throw new JSONValidationException.TypeMismatch ("String or number",
+	 * o.getClass ().getSimpleName ()); }
+	 * 
+	 * public IShellDate getDate (String key) throws JSONValidationException {
+	 * return _getDate (key, get (key)); }
+	 * 
+	 * @IShellInvisible public IShellDate getDate (int index) throws
+	 * JSONValidationException { return _getDate ("" + index, get (index)); }
+	 * 
+	 * private IShellDate _getDateFormatted (String key, java.lang.Object o, String
+	 * format) throws JSONValidationException { if (o instanceof Long) { return new
+	 * IShellDate ((long)o); }
+	 * 
+	 * if (o instanceof String) { DateFormat df = new SimpleDateFormat (format); try
+	 * { return new IShellDate (df.parse ((String)o)); } catch (ParseException e) {
+	 * throw new JSONValidationException.IllegalValue (key, o.toString ()); } }
+	 * 
+	 * throw new JSONValidationException.TypeMismatch ("String or number",
+	 * o.getClass ().getSimpleName ()); }
+	 * 
+	 * public IShellDate getDateFormatted (String key, String format) throws
+	 * JSONValidationException { return _getDateFormatted (key, get (key), format);
+	 * }
+	 * 
+	 * @IShellInvisible public IShellDate getDateFormatted (int index, String
+	 * format) throws JSONValidationException { return _getDateFormatted ("" +
+	 * index, get (index), format); }
+	 */
 	public abstract int length ();
 
 	public abstract String toString ();
@@ -391,14 +376,14 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable2 {
 		public void remove (int index) throws JSONValidationException {
 			String key = Integer.toString (index);
 			if (!map.containsKey (key))
-				throw new JSONValidationException (key + " not found");
+				throw new JSONValidationException.MissingKey (key);
 			remove (key);
 		}
 
 		@Override
 		public java.lang.Object get (String key) throws JSONValidationException {
 			if (!map.containsKey (key))
-				throw new JSONValidationException (key + " not found");
+				throw new JSONValidationException.MissingKey (key);
 			return map.get (key);
 		}
 
@@ -406,7 +391,7 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable2 {
 		public java.lang.Object get (int index) throws JSONValidationException {
 			String key = Integer.toString (index);
 			if (!map.containsKey (key))
-				throw new JSONValidationException (key + " not found");
+				throw new JSONValidationException.MissingKey (key);
 			return map.get (key);
 		}
 
@@ -414,7 +399,12 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable2 {
 			JSONObject json = new JSONObject ();
 			for (String key:map.keySet ()) {
 				java.lang.Object value = map.get (key);
-				json.put (key, denormalize (value));
+				if (value instanceof Object) {
+					value = ((Object)value).toJSONObject ();
+				} else if (value instanceof Array) {
+					value = ((Array)value).toJSONArray ();
+				}
+				json.put (key, value);
 			}
 			return json;
 		}
@@ -422,7 +412,8 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable2 {
 		@Override
 		public String toString () {
 			try {
-				return toJSONObject ().toString ();
+				JSONObject obj = toJSONObject ();
+				return obj.toString ();
 			} catch (JSONException e) {
 				return "{}";
 			}
@@ -451,10 +442,10 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable2 {
 			return map.keySet ().iterator ();
 		}
 		//
-		//		@Override
-		//		protected java.lang.Object toJSONElement () {
-		//			return json;
-		//		}
+		// @Override
+		// protected java.lang.Object toJSONElement () {
+		// return json;
+		// }
 
 		@Override
 		public boolean has (String key) {
@@ -464,6 +455,21 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable2 {
 		@Override
 		public Iterator<java.lang.Object> iterator () {
 			return map.values ().iterator ();
+		}
+
+		public Map<String, java.lang.Object> toMap () {
+			Map<String, java.lang.Object> map = new TreeMap<> ();
+			System.out.println (this.toString ());
+			for (String key:this.map.keySet ()) {
+				java.lang.Object value = this.map.get (key);
+				if (value instanceof JSONItem.Object) {
+					value = ((JSONItem.Object)value).toMap ();
+				} else if (value instanceof JSONItem.Array) {
+					value = ((JSONItem.Array)value).toList ();
+				}
+				map.put (key, value);
+			}
+			return map;
 		}
 	}
 
@@ -532,7 +538,12 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable2 {
 		private JSONArray toJSONArray () throws JSONException {
 			JSONArray json = new JSONArray ();
 			for (java.lang.Object value:list) {
-				json.put (denormalize (value));
+				if (value instanceof Object) {
+					value = ((Object)value).toJSONObject ();
+				} else if (value instanceof Array) {
+					value = ((Array)value).toJSONArray ();
+				}
+				json.put (value);
 			}
 			return json;
 		}
@@ -585,10 +596,10 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable2 {
 			return listKeys ().iterator ();
 		}
 		//
-		//		@Override
-		//		protected java.lang.Object toJSONElement () {
-		//			return this.json;
-		//		}
+		// @Override
+		// protected java.lang.Object toJSONElement () {
+		// return this.json;
+		// }
 
 		@Override
 		public boolean has (String key) {
@@ -603,6 +614,20 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable2 {
 		public Iterator<java.lang.Object> iterator () {
 			return list.iterator ();
 		}
+
+		public List<java.lang.Object> toList () {
+			List<java.lang.Object> list = new LinkedList<> ();
+			for (java.lang.Object value:this.list) {
+				if (value instanceof JSONItem.Object) {
+					value = ((JSONItem.Object)value).toMap ();
+				} else if (value instanceof JSONItem.Array) {
+					value = ((JSONItem.Array)value).toList ();
+				}
+				list.add (value);
+			}
+			return list;
+		}
+
 	}
 
 	protected int numericIndex (String key) throws NumberFormatException {
