@@ -15,9 +15,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import ca.redleafsolutions.Pair;
 import ca.redleafsolutions.json.JSONItem.Array;
-import ca.redleafsolutions.json.archive.JSONValidationException;
-import ca.redleafsolutions.json.archive.JSONValidationException.MissingKey;
+import ca.redleafsolutions.json.JSONValidationException.MissingKey;
 
 public class JSONUtils {
 	public static final Object NULL = JSONObject.NULL;

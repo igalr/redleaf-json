@@ -1,6 +1,8 @@
-package ca.redleafsolutions.json;
+package ca.redleafsolutions;
 
-import ca.redleafsolutions.json.archive.JSONValidationException;
+import ca.redleafsolutions.json.JSONItem;
+import ca.redleafsolutions.json.JSONValidationException;
+import ca.redleafsolutions.json.JSONWritable2;
 
 public class KeyValue<T> implements JSONWritable2 {
 	private String key;

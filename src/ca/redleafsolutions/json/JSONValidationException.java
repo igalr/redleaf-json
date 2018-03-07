@@ -1,4 +1,4 @@
-package ca.redleafsolutions.json.archive;
+package ca.redleafsolutions.json;
 
 import org.json.JSONException;
 
