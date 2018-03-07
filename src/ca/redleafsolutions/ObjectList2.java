@@ -8,8 +8,6 @@ import ca.redleafsolutions.json.JSONReadWritable2;
 import ca.redleafsolutions.json.JSONUtils;
 import ca.redleafsolutions.json.JSONValidationException;
 import ca.redleafsolutions.json.JSONWritable2;
-import ca.redleafsolutions.json.JSONItem.Array;
-import ca.redleafsolutions.json.JSONValidationException.TypeMismatch;
 
 @SuppressWarnings ("serial")
 public class ObjectList2 extends LinkedList<Object> implements JSONReadWritable2 {
