@@ -1,25 +1,24 @@
 package ca.redleafsolutions;
 
 import java.util.Collection;
-import java.util.LinkedList;
 
 import ca.redleafsolutions.json.JSONItem;
-import ca.redleafsolutions.json.JSONReadWritable2;
+import ca.redleafsolutions.json.JSONReadWritable;
 import ca.redleafsolutions.json.JSONUtils;
 import ca.redleafsolutions.json.JSONValidationException;
-import ca.redleafsolutions.json.JSONWritable2;
+import ca.redleafsolutions.json.JSONWritable;
 
 @SuppressWarnings ("serial")
-public class ObjectList2 extends LinkedList<Object> implements JSONReadWritable2 {
-	public ObjectList2 () {
+public class ObjectList extends BaseList<Object> implements JSONReadWritable {
+	public ObjectList () {
 		super ();
 	}
 
-	public ObjectList2 (Collection<? extends Object> collection) {
+	public ObjectList (Collection<? extends Object> collection) {
 		super (collection);
 	}
 
-	public ObjectList2 (JSONItem.Array json) throws JSONValidationException {
+	public ObjectList (JSONItem.Array json) throws JSONValidationException {
 		fromJSON (json);
 	}
 
@@ -36,8 +35,8 @@ public class ObjectList2 extends LinkedList<Object> implements JSONReadWritable2
 	public JSONItem toJSON () throws JSONValidationException {
 		JSONItem json = JSONItem.newArray ();
 		for (Object value: this) {
-			if (value instanceof JSONWritable2) {
-				value = ((JSONWritable2)value).toJSON ();
+			if (value instanceof JSONWritable) {
+				value = ((JSONWritable)value).toJSON ();
 			} else {
 				value = JSONUtils.toJSON (value);
 			}
@@ -55,11 +54,11 @@ public class ObjectList2 extends LinkedList<Object> implements JSONReadWritable2
 			Object value = json.get (i);
 			if (value instanceof JSONItem) {
 				if (((JSONItem)value).isArray ()) {
-					ObjectList2 list = new ObjectList2 ();
+					ObjectList list = new ObjectList ();
 					list.fromJSON ((JSONItem)value);
 					this.add (list);
 				} else {
-					ObjectMap2 map = new ObjectMap2 ();
+					ObjectMap map = new ObjectMap ();
 					map.fromJSON ((JSONItem)value);
 					this.add (map);
 				}
@@ -67,14 +66,5 @@ public class ObjectList2 extends LinkedList<Object> implements JSONReadWritable2
 				this.add (value);
 			}
 		}
-	}
-
-	public String join (String string) {
-		String s = "";
-		for (Object item:this) {
-			if (s.length () > 0) s += ",";
-			s += item;
-		}
-		return s;
 	}
 }

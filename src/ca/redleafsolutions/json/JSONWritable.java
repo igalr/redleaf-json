@@ -1,5 +1,5 @@
 package ca.redleafsolutions.json;
 
-public interface JSONWritable2 {
+public interface JSONWritable {
 	JSONItem toJSON () throws JSONValidationException;
 }

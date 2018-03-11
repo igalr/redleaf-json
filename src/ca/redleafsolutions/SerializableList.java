@@ -3,11 +3,11 @@ package ca.redleafsolutions;
 import java.util.LinkedList;
 
 import ca.redleafsolutions.json.JSONItem;
-import ca.redleafsolutions.json.JSONReadWritable2;
+import ca.redleafsolutions.json.JSONReadWritable;
 import ca.redleafsolutions.json.JSONValidationException;
 
 @SuppressWarnings ("serial")
-public abstract class SerializableList<T extends JSONReadWritable2> extends LinkedList<T> implements JSONReadWritable2 {
+public abstract class SerializableList<T extends JSONReadWritable> extends LinkedList<T> implements JSONReadWritable {
 	public SerializableList () throws JSONValidationException {}
 
 	public SerializableList (JSONItem json) throws JSONValidationException {

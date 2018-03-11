@@ -1,10 +1,10 @@
 package ca.redleafsolutions;
 
 import ca.redleafsolutions.json.JSONItem;
-import ca.redleafsolutions.json.JSONReadWritable2;
+import ca.redleafsolutions.json.JSONReadWritable;
 import ca.redleafsolutions.json.JSONValidationException;
 
-public class KeyValuePair<T> implements JSONReadWritable2 {
+public class KeyValuePair<T> implements JSONReadWritable {
 	private String key;
 	private T value;
 
@@ -32,9 +32,7 @@ public class KeyValuePair<T> implements JSONReadWritable2 {
 
 	@Override
 	public JSONItem toJSON () throws JSONValidationException {
-		JSONItem json = JSONItem.newObject ();
-		json.put (key, value);
-		return json;
+		return JSONItem.newObject ().put (key, value);
 	}
 
 	@SuppressWarnings ("unchecked")
@@ -44,7 +42,7 @@ public class KeyValuePair<T> implements JSONReadWritable2 {
 			throw new JSONValidationException.TypeMismatch ("json array", "json object");
 		}
 		if (json.length () != 1) {
-			throw new JSONValidationException.TypeMismatch ("single key", "multi key");
+			throw new JSONValidationException.TypeMismatch ("multi key", "single key");
 		}
 		for (Object okey:json.listKeys ()) {
 			key = okey.toString ();

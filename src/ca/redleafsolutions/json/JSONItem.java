@@ -22,7 +22,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 */
-public abstract class JSONItem implements Iterable<Object>, JSONWritable2 {
+public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 	public static JSONItem parse (String str) throws JSONValidationException {
 		str = str.trim ();
 		if (str.length () <= 0)
@@ -45,8 +45,8 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable2 {
 	public static JSONItem cast (java.lang.Object obj) throws JSONValidationException {
 		if (obj instanceof JSONItem) {
 			return (JSONItem)obj;
-		} else if (obj instanceof JSONWritable2) {
-			return ((JSONWritable2)obj).toJSON ();
+		} else if (obj instanceof JSONWritable) {
+			return ((JSONWritable)obj).toJSON ();
 		}
 
 		if (obj instanceof Map) {
@@ -148,8 +148,8 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable2 {
 			return new JSONItem.Object ((JSONObject)o);
 		} else if (o instanceof JSONArray) {
 			return new JSONItem.Array ((JSONArray)o);
-		} else if (o instanceof JSONWritable2) {
-			return ((JSONWritable2)o).toJSON ();
+		} else if (o instanceof JSONWritable) {
+			return ((JSONWritable)o).toJSON ();
 		}
 		throw new JSONValidationException.IllegalValue (key, o.getClass ().getSimpleName ());
 	}

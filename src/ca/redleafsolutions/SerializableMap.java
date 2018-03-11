@@ -3,11 +3,11 @@ package ca.redleafsolutions;
 import java.util.TreeMap;
 
 import ca.redleafsolutions.json.JSONItem;
-import ca.redleafsolutions.json.JSONReadWritable2;
+import ca.redleafsolutions.json.JSONReadWritable;
 import ca.redleafsolutions.json.JSONValidationException;
 
 @SuppressWarnings ("serial")
-public abstract class SerializableMap<T extends JSONReadWritable2> extends TreeMap<String, T> implements JSONReadWritable2 {
+public abstract class SerializableMap<T extends JSONReadWritable> extends TreeMap<String, T> implements JSONReadWritable {
 	public SerializableMap () throws JSONValidationException {
 	}
 	public SerializableMap (JSONItem json) throws JSONValidationException {

@@ -1,17 +1,15 @@
 package ca.redleafsolutions;
 
 import java.util.Map;
-import java.util.TreeMap;
 
 import org.apache.commons.codec.binary.Base64;
 
 import ca.redleafsolutions.json.JSONItem;
-import ca.redleafsolutions.json.JSONReadable2;
+import ca.redleafsolutions.json.JSONReadable;
 import ca.redleafsolutions.json.JSONValidationException;
-import ca.redleafsolutions.json.JSONWritable2;
 
 @SuppressWarnings ("serial")
-public class StringMap extends TreeMap<String, String> implements JSONReadable2, JSONWritable2 {
+public class StringMap extends BaseMap<String> implements JSONReadable {
 	public StringMap () {
 		super ();
 	}
@@ -21,16 +19,7 @@ public class StringMap extends TreeMap<String, String> implements JSONReadable2,
 	}
 
 	public StringMap (Map<String, String> omap) {
-		this.putAll (omap);
-	}
-
-	@Override
-	public JSONItem toJSON () throws JSONValidationException {
-		JSONItem json = JSONItem.newObject ();
-		for (String key: this.keySet ()) {
-			json.put (key, this.get (key));
-		}
-		return json;
+		super (omap);
 	}
 
 	@Override

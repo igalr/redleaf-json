@@ -289,8 +289,8 @@ public class JSONUtils {
 		if (depth > 2)
 			return o;
 
-		if (o instanceof JSONWritable2) {
-			return ((JSONWritable2)o).toJSON ();
+		if (o instanceof JSONWritable) {
+			return ((JSONWritable)o).toJSON ();
 		}
 
 		if (o instanceof Map) {
@@ -559,7 +559,7 @@ public class JSONUtils {
 		return json;
 	}
 
-	static private class NodeDiff implements JSONWritable2, Comparable<NodeDiff> {
+	static private class NodeDiff implements JSONWritable, Comparable<NodeDiff> {
 		private static final String DIFF_LABEL = "diff";
 		private static final String ONLY1_LABEL = "only1";
 		private static final String ONLY2_LABEL = "only2";
@@ -631,8 +631,8 @@ public class JSONUtils {
 					Object one = pair.getOne ();
 					Object two = pair.getTwo ();
 					JSONItem jpair = JSONItem.newObject ();
-					jpair.put ("1", (one instanceof JSONWritable2)? ((JSONWritable2)one).toJSON (): one);
-					jpair.put ("2", (two instanceof JSONWritable2)? ((JSONWritable2)two).toJSON (): two);
+					jpair.put ("1", (one instanceof JSONWritable)? ((JSONWritable)one).toJSON (): one);
+					jpair.put ("2", (two instanceof JSONWritable)? ((JSONWritable)two).toJSON (): two);
 					json.put (DIFF_LABEL, jpair);
 				}
 			}

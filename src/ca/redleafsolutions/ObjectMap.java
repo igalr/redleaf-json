@@ -3,43 +3,25 @@ package ca.redleafsolutions;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Map;
-import java.util.TreeMap;
 
 import org.apache.commons.codec.binary.Base64;
 
 import ca.redleafsolutions.json.JSONItem;
-import ca.redleafsolutions.json.JSONReadWritable2;
-import ca.redleafsolutions.json.JSONUtils;
+import ca.redleafsolutions.json.JSONReadWritable;
 import ca.redleafsolutions.json.JSONValidationException;
-import ca.redleafsolutions.json.JSONWritable2;
 
 @SuppressWarnings ("serial")
-public class ObjectMap2 extends TreeMap<String, Object> implements JSONReadWritable2 {
-	public ObjectMap2 () {
+public class ObjectMap extends BaseMap<Object> implements JSONReadWritable {
+	public ObjectMap () {
 		super ();
 	}
 
-	public ObjectMap2 (JSONItem json) throws JSONValidationException {
+	public ObjectMap (JSONItem json) throws JSONValidationException {
 		fromJSON (json);
 	}
 
-	public ObjectMap2 (Map<String, ? extends Object> omap) {
-		this.putAll (omap);
-	}
-
-	@Override
-	public JSONItem toJSON () throws JSONValidationException {
-		JSONItem json = JSONItem.newObject ();
-		for (String key: this.keySet ()) {
-			Object value = this.get (key);
-			if (value instanceof JSONWritable2) {
-				value = ((JSONWritable2)value).toJSON ();
-			} else {
-				value = JSONUtils.toJSON (value);
-			}
-			json.put (key, value);
-		}
-		return json;
+	public ObjectMap (Map<String, ? extends Object> omap) {
+		super (omap);
 	}
 
 	@Override
@@ -52,11 +34,11 @@ public class ObjectMap2 extends TreeMap<String, Object> implements JSONReadWrita
 			Object value = json.get (key);
 			if (value instanceof JSONItem) {
 				if (((JSONItem)value).isArray ()) {
-					ObjectList2 list = new ObjectList2 ();
+					ObjectList list = new ObjectList ();
 					list.fromJSON ((JSONItem)value);
 					this.put (key, list);
 				} else {
-					ObjectMap2 map = new ObjectMap2 ();
+					ObjectMap map = new ObjectMap ();
 					map.fromJSON ((JSONItem)value);
 					this.put (key, map);
 				}

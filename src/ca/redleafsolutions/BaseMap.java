@@ -4,16 +4,17 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import ca.redleafsolutions.json.JSONItem;
+import ca.redleafsolutions.json.JSONUtils;
 import ca.redleafsolutions.json.JSONValidationException;
-import ca.redleafsolutions.json.JSONWritable2;
+import ca.redleafsolutions.json.JSONWritable;
 
 @SuppressWarnings ("serial")
-public class ObjectMap4<T> extends TreeMap<String, T> implements JSONWritable2 {
-	public ObjectMap4 () {
+public class BaseMap<T> extends TreeMap<String, T> implements JSONWritable {
+	public BaseMap () {
 		super ();
 	}
 
-	public ObjectMap4 (Map<String, ? extends T> omap) {
+	public BaseMap (Map<String, ? extends T> omap) {
 		this.putAll (omap);
 	}
 
@@ -22,8 +23,13 @@ public class ObjectMap4<T> extends TreeMap<String, T> implements JSONWritable2 {
 		JSONItem json = JSONItem.newObject ();
 		for (String key:this.keySet ()) {
 			Object value = this.get (key);
-			if (value instanceof JSONWritable2) {
-				value = ((JSONWritable2)value).toJSON ();
+			if (!value.getClass ().isPrimitive ()) {
+				if (value instanceof String) {
+				} else if (value instanceof JSONWritable) {
+					value = ((JSONWritable)value).toJSON ();
+				} else {
+					value = JSONUtils.toJSON (value);
+				}
 			}
 			json.put (key, value);
 		}
