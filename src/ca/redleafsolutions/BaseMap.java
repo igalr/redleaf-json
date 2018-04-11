@@ -23,7 +23,7 @@ public class BaseMap<T> extends TreeMap<String, T> implements JSONWritable {
 		JSONItem json = JSONItem.newObject ();
 		for (String key:this.keySet ()) {
 			Object value = this.get (key);
-			if (!value.getClass ().isPrimitive ()) {
+			if ((value != null) && !value.getClass ().isPrimitive ()) {
 				if (value instanceof String) {
 				} else if (value instanceof JSONWritable) {
 					value = ((JSONWritable)value).toJSON ();

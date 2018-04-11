@@ -255,7 +255,23 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 
 	private boolean _getBoolean (String key, java.lang.Object o) throws JSONValidationException {
 		try {
-			return (boolean)o;
+			if (o instanceof Boolean) {
+				return (boolean)o;
+			} else if (o instanceof String) {
+				if ("true".equalsIgnoreCase((String)o) || "1".equalsIgnoreCase((String)o) || "yes".equalsIgnoreCase((String)o) || "on".equalsIgnoreCase((String)o)) {
+					return true;
+				} else if ("false".equalsIgnoreCase((String)o) || "0".equalsIgnoreCase((String)o) || "no".equalsIgnoreCase((String)o) || "off".equalsIgnoreCase((String)o)) {
+					return false;
+				}
+			} else if (o instanceof Number) {
+				int i = ((Number)o).intValue();
+				if (i == 1) {
+					return true;
+				} else if (i == 0) {
+					return false;
+				}
+			}
+			throw new JSONValidationException.IllegalValue("boolean", o);
 		} catch (ClassCastException e) {
 			throw new JSONValidationException.IllegalValue (key, o.toString ());
 		}
@@ -401,10 +417,29 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 					value = ((Object)value).toJSONObject ();
 				} else if (value instanceof Array) {
 					value = ((Array)value).toJSONArray ();
+				} else if (value instanceof JSONWritable) {
+					try {
+						JSONItem j = ((JSONWritable)value).toJSON ();
+						if (j instanceof JSONItem.Object) {
+							value = ((JSONItem.Object)j).toJSONObject ();
+						} else if (j instanceof JSONItem.Array) {
+							value = ((JSONItem.Array)j).toJSONArray ();
+						}
+					} catch (JSONValidationException e) {
+					}
 				}
 				json.put (key, value);
 			}
 			return json;
+		}
+
+		public String _toString () {
+			try {
+				JSONObject obj = toJSONObject ();
+				return obj.toString ();
+			} catch (JSONException e) {
+				return "{}";
+			}
 		}
 
 		@Override
@@ -540,6 +575,16 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 					value = ((Object)value).toJSONObject ();
 				} else if (value instanceof Array) {
 					value = ((Array)value).toJSONArray ();
+				} else if (value instanceof JSONWritable) {
+					try {
+						JSONItem j = ((JSONWritable)value).toJSON ();
+						if (j instanceof JSONItem.Object) {
+							value = ((JSONItem.Object)j).toJSONObject ();
+						} else if (j instanceof JSONItem.Array) {
+							value = ((JSONItem.Array)j).toJSONArray ();
+						}
+					} catch (JSONValidationException e) {
+					}
 				}
 				json.put (value);
 			}

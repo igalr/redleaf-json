@@ -18,9 +18,10 @@ public class BaseList<T> extends LinkedList<T> implements JSONWritable {
 		this.addAll (olist);
 	}
 
-	public BaseList (T... functions) {
-		for (int i=0; i<functions.length; ++i) {
-			this.add (functions[i]);
+	@SafeVarargs
+	public BaseList (T... items) {
+		for (int i=0; i<items.length; ++i) {
+			this.add (items[i]);
 		}
 	}
 
