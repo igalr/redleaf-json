@@ -56,7 +56,12 @@ public class StringMap extends BaseMap<String> implements JSONReadable {
 
 	public void fromSearchString (String searchString) {
 		clear();
-		String[] params = searchString.split("&");
+		String[] params;
+		if (searchString != null) {
+			params = searchString.split("&");
+		} else {
+			params = new String[] {};
+		}
 		for (String param : params) {
 			String[] keyvalue = param.split("=");
 			if (keyvalue.length == 2){
