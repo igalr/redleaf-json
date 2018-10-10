@@ -22,6 +22,22 @@ public class ObjectList extends BaseList<Object> implements JSONReadWritable {
 		fromJSON (json);
 	}
 
+	public String join (String delimiter) {
+		String s = "";
+		for (Object item:this) {
+			if (s.length () > 0)
+				s += delimiter;
+			if (item instanceof Number) {
+				s += item.toString ();
+			} else if (item instanceof Boolean) {
+				s += item.toString ();
+			} else {
+				s += "\"" + item.toString () + "\"";
+			}
+		}
+		return s;
+	}
+	
 	@Override
 	public String toString () {
 		try {

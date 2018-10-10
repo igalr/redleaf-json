@@ -42,4 +42,14 @@ public class BaseList<T> extends LinkedList<T> implements JSONWritable {
 		}
 		return json;
 	}
+	
+	public String join (String separator) {
+		StringBuffer sb = new StringBuffer ();
+		for (T item:this) {
+			if (sb.length () > 0)
+				sb.append (separator);
+			sb.append (item.toString ());
+		}
+		return sb.toString ();
+	}
 }
