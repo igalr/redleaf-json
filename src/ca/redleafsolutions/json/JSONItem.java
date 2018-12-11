@@ -336,6 +336,9 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 	public void save (File file) throws IOException {
 		Files.write (Paths.get (file.toURI ()), toString ().getBytes ());
 	}
+	public void savePretty (File file) throws IOException {
+		Files.write (Paths.get (file.toURI ()), toString (3).getBytes ());
+	}
 
 	public static class Object extends JSONItem {
 		private Map<String, java.lang.Object> map;
@@ -718,4 +721,5 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 		}
 		return this;
 	}
+
 }
