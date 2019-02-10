@@ -52,6 +52,11 @@
 				<attribute name="GitTag" value="${tag}" />
 			</manifest>
 		</jar>
+
+		<mkdir dir="dist/lib" />
+		<copy todir="dist/lib">
+			<fileset dir="lib"/>
+		</copy>
 	</target>
 		
 	<target name="distnolib" depends="dist" description="Generate fat JAR file">
