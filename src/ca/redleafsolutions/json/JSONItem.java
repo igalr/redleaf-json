@@ -631,7 +631,7 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 		@Override
 		public List<?> listKeys () {
 			List<Integer> list = new LinkedList<Integer> ();
-			for (int i = 0; i < list.size (); ++i) {
+			for (int i = 0; i < this.list.size (); ++i) {
 				list.add (i);
 			}
 			return list;
