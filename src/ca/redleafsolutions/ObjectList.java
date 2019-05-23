@@ -22,6 +22,10 @@ public class ObjectList extends BaseList<Object> implements JSONReadWritable {
 		fromJSON (json);
 	}
 
+	public ObjectList (Object[] list) {
+		super (list);
+	}
+
 	public String join (String delimiter) {
 		String s = "";
 		for (Object item:this) {
