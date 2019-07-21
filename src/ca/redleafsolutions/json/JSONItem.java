@@ -168,10 +168,10 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 	}
 
 	private String _getString (String key, java.lang.Object o) throws JSONValidationException {
-		try {
-			return (String)o;
-		} catch (ClassCastException e) {
-			throw new JSONValidationException.IllegalValue (key, o.toString ());
+		if (o == null) {
+			return "";
+		} else {
+			return o.toString ();
 		}
 	}
 

@@ -7,6 +7,6 @@ import ca.redleafsolutions.json.JSONItem;
 import ca.redleafsolutions.json.JSONValidationException;
 
 public interface PersistentDataStore {
-	JSONItem get (String name) throws IOException, JSONValidationException;
+	JSONItem get (String id) throws IOException, JSONValidationException;
 	Set<String> list ();
 }
