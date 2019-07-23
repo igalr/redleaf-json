@@ -170,6 +170,8 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 	private String _getString (String key, java.lang.Object o) throws JSONValidationException {
 		if (o == null) {
 			return "";
+		} else if (o instanceof JSONItem) {
+			throw new JSONValidationException.IllegalValue (key, o);
 		} else {
 			return o.toString ();
 		}
