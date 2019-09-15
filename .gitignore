@@ -1,3 +1,2 @@
-/bin/
-/dist/
-/logs/
+/target/
+/.vscode/
