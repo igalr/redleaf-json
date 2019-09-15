@@ -400,7 +400,6 @@ public class JSONUtils {
 		return compareValues (null, o1, o2).toJSON ();
 	}
 
-	@SuppressWarnings ("unchecked")
 	private static NodeDiff compareValues (String key, Object v1, Object v2) throws JSONValidationException {
 		NodeDiff nodediff = new NodeDiff (key);
 
