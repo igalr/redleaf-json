@@ -1,5 +1,6 @@
 package ca.redleafsolutions;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 
@@ -20,9 +21,7 @@ public class BaseList<T> extends LinkedList<T> implements JSONWritable {
 
 	@SafeVarargs
 	public BaseList (T... items) {
-		for (int i=0; i<items.length; ++i) {
-			this.add (items[i]);
-		}
+		this.addAll (Arrays.asList (items));
 	}
 
 	@Override
