@@ -56,4 +56,12 @@ public class AppTest {
             assertEquals(json.get (key), json2.get (key));
         }
     }
+
+    @Test
+    public void equalCheck () throws JSONValidationException {
+        JSONItem obj1 = createObject();
+        JSONItem obj2 = JSONItem.clone(obj1);
+        assert (obj1.equals(obj2));
+        assert (!obj1.equals(JSONItem.newObject().put ("key", "value")));
+    }
 }
