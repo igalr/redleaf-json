@@ -527,7 +527,7 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 
 		public Map<String, java.lang.Object> toMap () {
 			Map<String, java.lang.Object> map = new TreeMap<> ();
-			System.out.println (this.toString ());
+			// System.out.println (this.toString ());
 			for (String key:this.map.keySet ()) {
 				java.lang.Object value = this.map.get (key);
 				if (value instanceof JSONItem.Object) {
