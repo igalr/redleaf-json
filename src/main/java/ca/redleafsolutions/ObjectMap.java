@@ -55,10 +55,16 @@ public class ObjectMap extends BaseMap<Object> implements JSONReadWritable {
 			Object value = get (key);
 			if (key != null) {
 				try {
-					search += key + "=" + URLEncoder.encode (value.toString (), "UTF-8");
+					key = URLEncoder.encode (key, "UTF-8");
 				} catch (UnsupportedEncodingException e) {
-					search += key + "=" + value;
+					// just leave key as is
 				}
+				try {
+					value = URLEncoder.encode (value.toString (), "UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					// just leave key as is
+				}
+				search += key + "=" + value;
 			}
 		}
 		return search;
