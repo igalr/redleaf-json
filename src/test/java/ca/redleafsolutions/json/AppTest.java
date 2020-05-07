@@ -64,4 +64,28 @@ public class AppTest {
         assert (obj1.equals(obj2));
         assert (!obj1.equals(JSONItem.newObject().put ("key", "value")));
     }
+
+    @Test
+    public void booleanTest () throws JSONValidationException {
+        JSONItem obj1 = JSONItem.newObject ().put ("bool-true", true).put ("int-true", 1).put ("int-false", 0);
+        assert ((Boolean)obj1.get ("bool-true") == true);
+        assert (obj1.getBoolean ("int-true") == true);
+        assert (obj1.getBoolean ("int-false") == false);
+    }
+    
+    @Test
+    public void diff () throws JSONValidationException {
+       JSONItem obj1 = createObject();
+       JSONItem obj2 = JSONItem.clone(obj1);
+       obj1.put ("extra1", "Extra item");
+       obj2.put ("extra2", 123);
+       obj2.getJSON ("object").remove ("string");
+       obj2.getJSON ("object").put ("boolean", false);
+       JSONItem jdiff = JSONUtils.diff (obj1, obj2);
+       assert ("Hello World!".equals (jdiff.getJSON ("diff").getJSON ("object").getJSON ("only1").getString ("string")));
+       assert (jdiff.getJSON ("diff").getJSON ("object").getJSON ("diff").getJSON ("boolean").getBoolean (1));
+       assert (!jdiff.getJSON ("diff").getJSON ("object").getJSON ("diff").getJSON ("boolean").getBoolean (2));
+       assert ("Extra item".equals (jdiff.getJSON ("only1").get ("extra1")));
+       assert (123 == jdiff.getJSON ("only2").getInt ("extra2"));
+    }
 }

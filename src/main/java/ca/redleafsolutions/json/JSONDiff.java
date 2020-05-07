@@ -2,13 +2,13 @@ package ca.redleafsolutions.json;
 
 import java.util.List;
 
-import ca.redleafsolutions.BaseList;
 import ca.redleafsolutions.BaseMap;
+import ca.redleafsolutions.ObjectMap;
 
 public class JSONDiff extends ObjectDiff implements JSONWritable {
-	BaseList<String> only1;
-	BaseList<String> only2;
-	BaseMap<ObjectDiff> diff;
+	private ObjectMap only1;
+	private ObjectMap only2;
+	private BaseMap<ObjectDiff> diff;
 
 	private JSONItem json1;
 	private JSONItem json2;
@@ -21,8 +21,8 @@ public class JSONDiff extends ObjectDiff implements JSONWritable {
 		this.json1 = json1;
 		this.json2 = json2;
 
-		only1 = new BaseList<String> ();
-		only2 = new BaseList<String> ();
+		only1 = new ObjectMap ();
+		only2 = new ObjectMap ();
 		diff = new BaseMap<ObjectDiff> ();
 	}
 
@@ -34,7 +34,7 @@ public class JSONDiff extends ObjectDiff implements JSONWritable {
 			for (Object okey:keys1) {
 				String key = okey.toString ();
 				if (!json2.has (key)) {
-					only1.add (key);
+					only1.put (key, json1.get (key));
 				} else {
 					diff (key, json1.get (key), json2.get (key));
 				}
@@ -42,7 +42,7 @@ public class JSONDiff extends ObjectDiff implements JSONWritable {
 			for (Object okey:keys2) {
 				String key = okey.toString ();
 				if (!json1.has (key)) {
-					only1.add (key);
+					only2.put (key, json2.get (key));
 				}
 			}
 
