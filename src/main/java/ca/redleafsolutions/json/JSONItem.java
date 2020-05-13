@@ -72,7 +72,8 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 	}
 
 	public static JSONItem fromStream(InputStream is) throws JSONValidationException, IOException {
-		return parse(IOUtils.toString(is, "UTF-8"));
+		JSONItem json = parse(IOUtils.toString(is, "UTF-8"));
+		return json;
 	}
 
 	public static JSONItem newObject() {
