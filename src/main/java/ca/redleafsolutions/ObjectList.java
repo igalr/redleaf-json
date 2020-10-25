@@ -25,6 +25,24 @@ public class ObjectList extends BaseList<Object> implements JSONReadWritable {
 	public ObjectList (Object[] list) {
 		super (list);
 	}
+	
+	@SuppressWarnings ("unchecked")
+	public <T> T get (int index, Class<T> cls) {
+		return (T)get(index);
+	}
+
+	public <T> T tryGet (int index, T defaultValue) {
+		try {
+			@SuppressWarnings ("unchecked")
+			T value = (T)get(index);
+			if (value == null) {
+				value = defaultValue;
+			}
+			return value;
+		} catch (ClassCastException | IndexOutOfBoundsException e) {
+			return  defaultValue;
+		}
+	}
 
 	public String join (String delimiter) {
 		String s = "";

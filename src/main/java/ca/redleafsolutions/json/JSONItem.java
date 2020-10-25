@@ -142,6 +142,29 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 
 	public abstract boolean has(String key);
 
+	/** Try and get a value from JSON object. If it fails, return the @defaultValue
+	 * The type of the value is determined by the type of the defaultValue provided
+	 * @param <T>	type of value
+	 * @param key	the key to the value to retrieve
+	 * @param defaultValue	the default value to return in case key value is not valid (missing or type mismatched)
+	 * @return	The value
+	 */
+	public <T> T tryGet (String key, T defaultValue) {
+		try {
+			@SuppressWarnings ("unchecked")
+			T value = (T)get(key);
+			if (value == null) {
+				value = defaultValue;
+			}
+			return value;
+		} catch (ClassCastException | JSONValidationException e) {
+			return  defaultValue;
+		}
+	}
+	public <T> T tryGet (int index, T defaultValue) {
+		return tryGet ("" + index, defaultValue);
+	}
+	
 	private JSONItem _getJSONItem(String key, java.lang.Object o) throws JSONValidationException {
 		if (o instanceof JSONItem) {
 			return (JSONItem) o;
@@ -393,13 +416,21 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 			this ();
 			for (Iterator<?> it = json.keys (); it.hasNext ();) {
 				String key = (String)it.next ();
-				try {
+//				try {
 					java.lang.Object value = json.get (key);
-					put (key, value);
-				} catch (JSONException e) {
-					// this is not reasonable exception for this case the keys are queried
-					throw new RuntimeException (e);
-				}
+//					if (value instanceof JSONObject) {
+//						put (key, new JSONItem.Object ((JSONObject)value));
+//					} else if ("null".equals (value.toString ()) && !(value instanceof String)) {
+//						put (key, null);
+//					} else if (value instanceof JSONArray) {
+//						put (key, new JSONItem.Array ((JSONArray)value));
+//					} else {
+						put (key, value);
+//					}
+//				} catch (JSONException e) {
+//					// this is not reasonable exception for this case the keys are queried
+//					throw new RuntimeException (e);
+//				}
 			}
 		}
 

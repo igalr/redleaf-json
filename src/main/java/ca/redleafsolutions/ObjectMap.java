@@ -23,6 +23,24 @@ public class ObjectMap extends BaseMap<Object> implements JSONReadWritable {
 	public ObjectMap (Map<String, ? extends Object> omap) {
 		super (omap);
 	}
+	
+	@SuppressWarnings ("unchecked")
+	public <T> T get (String key, Class<T> cls) {
+		return (T)get(key);
+	}
+
+	public <T> T tryGet (String key, T defaultValue) {
+		try {
+			@SuppressWarnings ("unchecked")
+			T value = (T)get(key);
+			if (value == null) {
+				value = defaultValue;
+			}
+			return value;
+		} catch (ClassCastException e) {
+			return  defaultValue;
+		}
+	}
 
 	@Override
 	public void fromJSON (JSONItem json) throws JSONValidationException {
