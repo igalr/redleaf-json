@@ -23,6 +23,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 */
 public abstract class JSONItem implements Iterable<Object>, JSONWritable {
+	public static final JSONItem.NULL NULL = new JSONItem.NULL ();
+
 	public static JSONItem parse(String str) throws JSONValidationException {
 		str = str.trim();
 		if (str.length() <= 0)
@@ -369,6 +371,19 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 		Files.write(Paths.get(file.toURI()), toString(3).getBytes());
 	}
 
+	protected java.lang.Object _convert (java.lang.Object o) {
+		if (o instanceof JSONObject)
+			return new JSONItem.Object ((JSONObject)o);
+		
+		if (JSONObject.NULL.equals (o))
+			return JSONItem.NULL;
+		
+		if (o instanceof JSONArray)
+			return new JSONItem.Array ((JSONArray)o);
+			
+		return o;
+	}
+
 	@Override
 	public boolean equals(java.lang.Object other) {
 		if (!(other instanceof JSONItem)) {
@@ -416,21 +431,12 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 			this ();
 			for (Iterator<?> it = json.keys (); it.hasNext ();) {
 				String key = (String)it.next ();
-//				try {
-					java.lang.Object value = json.get (key);
-//					if (value instanceof JSONObject) {
-//						put (key, new JSONItem.Object ((JSONObject)value));
-//					} else if ("null".equals (value.toString ()) && !(value instanceof String)) {
-//						put (key, null);
-//					} else if (value instanceof JSONArray) {
-//						put (key, new JSONItem.Array ((JSONArray)value));
-//					} else {
-						put (key, value);
-//					}
-//				} catch (JSONException e) {
-//					// this is not reasonable exception for this case the keys are queried
-//					throw new RuntimeException (e);
-//				}
+				try {
+					put (key, _convert (json.get (key)));
+				} catch (JSONException e) {
+					// this is not reasonable exception for this case the keys are queried
+					throw new RuntimeException (e);
+				}
 			}
 		}
 
@@ -586,12 +592,12 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 				this.list.add (denormalize (value));
 			}
 		}
-
+			
 		Array (JSONArray json) {
 			this ();
 			for (int i = 0; i < json.length (); ++i) {
 				try {
-					put (json.get (i));
+					put (_convert (json.get (i)));
 				} catch (JSONException e) {
 					// ignore this error
 				}
@@ -786,4 +792,10 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 		return this;
 	}
 
+	static public class NULL {
+		@Override
+		public String toString () {
+			return "null";
+		}
+	}
 }
