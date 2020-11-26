@@ -1,8 +1,18 @@
 package ca.redleafsolutions.json;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Iterator;
+
+import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
+
+import ca.redleafsolutions.ObjectList;
 
 public class AppTest {
 	private JSONItem createObject () throws JSONValidationException {
@@ -64,11 +74,41 @@ public class AppTest {
 	}
 
 	@Test
-	public void booleanTest () throws JSONValidationException {
-		JSONItem obj1 = JSONItem.newObject ().put ("bool-true", true).put ("int-true", 1).put ("int-false", 0);
-		assert ((Boolean)obj1.get ("bool-true") == true);
-		assert (obj1.getBoolean ("int-true") == true);
-		assert (obj1.getBoolean ("int-false") == false);
+	public void parse () throws JSONValidationException, IOException {
+		JSONItem json;
+		try {
+			json = JSONItem.parse (null);
+			fail ("Should fail parsing a null string");
+		} catch (JSONValidationException e) {
+		}
+		try {
+			json = JSONItem.parse ("");
+			fail ("Should fail parsing empty string");
+		} catch (JSONValidationException e) {
+		}
+		
+		json = JSONItem.parse ("{}");
+		assert (json.length () == 0);
+		
+		json = JSONItem.parse ("[]");
+		assert (json.length () == 0);
+		
+		try {
+			json = JSONItem.parse ("X");
+			fail ("Should fail parsing non-json string");
+		} catch (JSONValidationException e) {
+		}
+		
+		InputStream is = new ByteArrayInputStream ("{}".getBytes ());
+		json = JSONItem.fromStream (is);
+		is.close ();
+		assert (json.length () == 0);
+		
+		File file = File.createTempFile ("temp.", ".json");
+		json = JSONItem.parse ("{\"var1\": 1, \"var2\": \"ABC\", \"var3\": {\"v1\":null, \"array\":[1, 2, 3]}}");
+		FileUtils.writeByteArrayToFile (file, json.toString (3).getBytes ());
+		JSONItem json1 = JSONItem.fromFile (file);
+		assert (json1.equals (json));
 	}
 
 	@Test
@@ -85,5 +125,27 @@ public class AppTest {
 		assert (!jdiff.getJSON ("diff").getJSON ("object").getJSON ("diff").getJSON ("boolean").getBoolean (2));
 		assert ("Extra item".equals (jdiff.getJSON ("only1").get ("extra1")));
 		assert (123 == jdiff.getJSON ("only2").getInt ("extra2"));
+	}
+	
+	@Test
+	public void typesBoolean () throws JSONValidationException {
+		JSONItem legaltrue = JSONItem.fromList (new ObjectList (new Object[] { true, 1, "true", "1", "yes", "on" }));
+		JSONItem legalfalse = JSONItem.fromList (new ObjectList (new Object[] { false, 0, "false", "0", "no", "off" }));
+		JSONItem ilegal = JSONItem.fromList (new ObjectList (new Object[] { "X", 2, null }));
+
+		for (int i=0; i<legaltrue.length (); ++i) {
+			boolean b = legaltrue.getBoolean (i);
+			assert (b);
+		}
+		for (int i=0; i<legalfalse.length (); ++i) {
+			boolean b = legalfalse.getBoolean (i);
+			assert (!b);
+		}
+		for (int i=0; i<ilegal.length (); ++i) {
+			try {
+				boolean b = ilegal.getBoolean (i);
+				fail ("call should not succeed");
+			} catch (JSONValidationException.IllegalValue e) {}
+		}
 	}
 }

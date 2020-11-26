@@ -26,6 +26,9 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 	public static final JSONItem.NULL NULL = new JSONItem.NULL ();
 
 	public static JSONItem parse(String str) throws JSONValidationException {
+		if (str == null)
+			throw new JSONValidationException("Not a JSON format");
+
 		str = str.trim();
 		if (str.length() <= 0)
 			throw new JSONValidationException("Not a JSON format");
@@ -401,7 +404,11 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 			try {
 				java.lang.Object v1 = this.get(key);
 				java.lang.Object v2 = that.get(key);
-				if (!v1.equals(v2)) {
+				if (v1 == null) {
+					if ((v2 != null) || !(v2 instanceof JSONItem.NULL) || !"null".equals (v2)) {
+						return false;
+					}
+				} else if (!v1.equals(v2)) {
 					return false;
 				}
 			} catch (JSONValidationException e) {
@@ -796,6 +803,22 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 		@Override
 		public String toString () {
 			return "null";
+		}
+		
+		@Override
+		public boolean equals (java.lang.Object obj) {
+			if (obj == null) { 
+				return true;
+			}
+			if (obj instanceof JSONItem.NULL) {
+				return true;
+			}
+			if (obj instanceof String) {
+				if ("null".equalsIgnoreCase (obj.toString ())) {
+					return true;
+				}
+			}
+			return false;
 		}
 	}
 }
