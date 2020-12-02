@@ -143,7 +143,7 @@ public class AppTest {
 		}
 		for (int i=0; i<ilegal.length (); ++i) {
 			try {
-				boolean b = ilegal.getBoolean (i);
+				ilegal.getBoolean (i);
 				fail ("call should not succeed");
 			} catch (JSONValidationException.IllegalValue e) {}
 		}
