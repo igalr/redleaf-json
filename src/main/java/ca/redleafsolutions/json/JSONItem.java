@@ -379,7 +379,7 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 			return new JSONItem.Object ((JSONObject)o);
 		
 		if (JSONObject.NULL.equals (o))
-			return JSONItem.NULL;
+			return null;
 		
 		if (o instanceof JSONArray)
 			return new JSONItem.Array ((JSONArray)o);
