@@ -101,10 +101,11 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 		}
 	}
 
-	public static JSONItem forceJSONArray(JSONItem json) throws JSONValidationException {
+	public static JSONItem.Array forceJSONArray(JSONItem json) {
 		if (json.isArray())
-			return json;
-		JSONItem jarr = JSONItem.newArray();
+			return (JSONItem.Array)json;
+		
+		JSONItem.Array jarr = new JSONItem.Array();
 		jarr.put(json);
 		return jarr;
 	}
