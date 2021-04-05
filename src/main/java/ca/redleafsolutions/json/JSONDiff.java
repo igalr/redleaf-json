@@ -5,7 +5,7 @@ import java.util.List;
 import ca.redleafsolutions.BaseMap;
 import ca.redleafsolutions.ObjectMap;
 
-public class JSONDiff extends ObjectDiff implements JSONWritable {
+public class JSONDiff extends ObjectDiff {
 	private ObjectMap only1;
 	private ObjectMap only2;
 	private BaseMap<ObjectDiff> diff;
