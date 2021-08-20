@@ -5,11 +5,11 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.jupiter.api.Test;
 
 import ca.redleafsolutions.ObjectList;
@@ -106,7 +106,9 @@ public class AppTest {
 		
 		File file = File.createTempFile ("temp.", ".json");
 		json = JSONItem.parse ("{\"var1\": 1, \"var2\": \"ABC\", \"var3\": {\"v1\":null, \"array\":[1, 2, 3]}}");
-		FileUtils.writeByteArrayToFile (file, json.toString (3).getBytes ());
+		FileOutputStream os = new FileOutputStream(file);
+		os.write(json.toString().getBytes());
+		os.close();
 		JSONItem json1 = JSONItem.fromFile (file);
 		assert (json1.equals (json));
 	}

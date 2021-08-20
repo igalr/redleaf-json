@@ -7,7 +7,7 @@
 
 	<groupId>ca.redleafsolutions</groupId>
 	<artifactId>redleaf-json</artifactId>
-	<version>1.4.3</version>
+	<version>1.4.4</version>
 
 	<name>redleaf-json</name>
 	<url>https://redleafsolutions.ca/packages</url>
@@ -25,11 +25,11 @@
 			<version>1.15</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 			<version>2.8.0</version>
-		</dependency>
+		</dependency> -->
 		<!-- https://mvnrepository.com/artifact/org.json/json -->
 		<dependency>
 			<groupId>org.json</groupId>

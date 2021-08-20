@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -77,8 +76,17 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 	}
 
 	public static JSONItem fromStream(InputStream is) throws JSONValidationException, IOException {
-		JSONItem json = parse(IOUtils.toString(is, "UTF-8"));
-		return json;
+		StringBuffer sb = new StringBuffer ();
+
+		try {
+			byte[] buff = new byte[1024];
+			int len;
+			while ((len = is.read(buff)) > 0) {
+				sb.append(new String (buff, 0, len));
+			}
+		} catch (IOException e) { }
+
+		return parse(sb.toString());
 	}
 
 	public static JSONItem newObject() {
@@ -406,7 +414,7 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 				java.lang.Object v1 = this.get(key);
 				java.lang.Object v2 = that.get(key);
 				if (v1 == null) {
-					if ((v2 != null) || !(v2 instanceof JSONItem.NULL) || !"null".equals (v2)) {
+					if ((v2 != null) && !(v2 instanceof JSONItem.NULL) && !"null".equals (v2)) {
 						return false;
 					}
 				} else if (!v1.equals(v2)) {
@@ -508,6 +516,8 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 						}
 					} catch (JSONValidationException e) {
 					}
+				} else if (value == null) {
+					value = JSONItem.NULL;
 				}
 				json.put (key, value);
 			}
