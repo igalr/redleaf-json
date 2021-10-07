@@ -4,10 +4,15 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
 import ca.redleafsolutions.json.JSONItem;
+import ca.redleafsolutions.json.JSONValidationException;
 
 public class Instantiator<T> {
 	public T instantiate (String clstr) throws InstantiationException {
 		return instantiate (clstr, null);
+	}
+
+	public T newInstance (JSONItem json) throws InstantiationException, JSONValidationException {
+		return instantiate (json.getString("class"), json.tryGet("params", (JSONItem)null));
 	}
 
 	public T instantiate (String clstr, JSONItem json) throws InstantiationException {
