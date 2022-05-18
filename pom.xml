@@ -7,7 +7,7 @@
 
 	<groupId>ca.redleafsolutions</groupId>
 	<artifactId>redleaf-json</artifactId>
-	<version>1.4.5</version>
+	<version>1.5.0</version>
 
 	<name>redleaf-json</name>
 	<url>https://redleafsolutions.ca/packages</url>
@@ -24,17 +24,11 @@
 			<artifactId>commons-codec</artifactId>
 			<version>1.15</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
-		<!-- <dependency>
-			<groupId>commons-io</groupId>
-			<artifactId>commons-io</artifactId>
-			<version>2.8.0</version>
-		</dependency> -->
 		<!-- https://mvnrepository.com/artifact/org.json/json -->
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
-			<version>20210307</version>
+			<version>20220320</version>
 		</dependency>
 
 
@@ -42,7 +36,7 @@
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-api</artifactId>
-			<version>5.7.0</version>
+			<version>5.8.2</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

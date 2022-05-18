@@ -10,7 +10,6 @@ import ca.redleafsolutions.json.JSONItem;
 import ca.redleafsolutions.json.JSONReadWritable;
 import ca.redleafsolutions.json.JSONValidationException;
 
-@SuppressWarnings ("serial")
 public class ObjectMap extends BaseMap<Object> implements JSONReadWritable {
 	public ObjectMap () {
 		super ();
@@ -41,7 +40,7 @@ public class ObjectMap extends BaseMap<Object> implements JSONReadWritable {
 			return  defaultValue;
 		}
 	}
-
+	
 	@Override
 	public void fromJSON (JSONItem json) throws JSONValidationException {
 		if (json.isArray ())

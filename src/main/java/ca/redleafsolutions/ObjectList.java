@@ -8,7 +8,6 @@ import ca.redleafsolutions.json.JSONUtils;
 import ca.redleafsolutions.json.JSONValidationException;
 import ca.redleafsolutions.json.JSONWritable;
 
-@SuppressWarnings ("serial")
 public class ObjectList extends BaseList<Object> implements JSONReadWritable {
 	public ObjectList () {
 		super ();

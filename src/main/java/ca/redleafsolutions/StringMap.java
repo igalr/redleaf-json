@@ -8,7 +8,6 @@ import ca.redleafsolutions.json.JSONItem;
 import ca.redleafsolutions.json.JSONReadable;
 import ca.redleafsolutions.json.JSONValidationException;
 
-@SuppressWarnings ("serial")
 public class StringMap extends BaseMap<String> implements JSONReadable {
 	public StringMap () {
 		super ();

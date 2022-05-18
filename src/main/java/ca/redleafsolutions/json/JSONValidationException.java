@@ -2,7 +2,6 @@ package ca.redleafsolutions.json;
 
 import org.json.JSONException;
 
-@SuppressWarnings ("serial")
 public class JSONValidationException extends Exception {
 	public JSONValidationException (String msg) {
 		super (msg);

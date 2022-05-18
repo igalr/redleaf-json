@@ -2,37 +2,41 @@ package ca.redleafsolutions;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.LinkedList;
+import java.util.HashSet;
+import java.util.Set;
 
 import ca.redleafsolutions.json.JSONItem;
 import ca.redleafsolutions.json.JSONUtils;
 import ca.redleafsolutions.json.JSONValidationException;
 import ca.redleafsolutions.json.JSONWritable;
 
-public class BaseList<T> extends LinkedList<T> implements JSONWritable {
-	public BaseList () {
+public class BaseSet<T> extends HashSet<T> implements JSONWritable {
+	public BaseSet () {
 		super ();
 	}
 
-	public BaseList (Collection<? extends T> olist) {
-		this.addAll (olist);
+	public BaseSet (Set<? extends T> set) {
+		super.addAll (set);
+	}
+
+	public BaseSet (Collection<? extends T> set) {
+		super.addAll (set);
 	}
 
 	@SafeVarargs
-	public BaseList (T... items) {
-		this.addAll (Arrays.asList (items));
+	public BaseSet (T... items) {
+		super.addAll (Arrays.asList (items));
 	}
 
-	public BaseList<T> addAnd (T item) {
-		this.add (item);
+	public BaseSet<T> addAnd (T item) {
+		super.add (item);
 		return this;
 	}
 
 	@Override
 	public JSONItem toJSON () throws JSONValidationException {
 		JSONItem json = JSONItem.newArray ();
-		for (int i=0; i<size (); ++i) {
-			Object value = this.get (i);
+		for (Object value:this) {
 			if (!value.getClass ().isPrimitive ()) {
 				if (value instanceof String) {
 				} else if (value instanceof JSONWritable) {

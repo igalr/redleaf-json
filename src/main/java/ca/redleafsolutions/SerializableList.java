@@ -6,7 +6,6 @@ import ca.redleafsolutions.json.JSONItem;
 import ca.redleafsolutions.json.JSONReadWritable;
 import ca.redleafsolutions.json.JSONValidationException;
 
-@SuppressWarnings ("serial")
 public abstract class SerializableList<T extends JSONReadWritable> extends LinkedList<T> implements JSONReadWritable {
 	public SerializableList () throws JSONValidationException {}
 

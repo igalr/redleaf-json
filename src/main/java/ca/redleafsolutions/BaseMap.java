@@ -8,7 +8,6 @@ import ca.redleafsolutions.json.JSONUtils;
 import ca.redleafsolutions.json.JSONValidationException;
 import ca.redleafsolutions.json.JSONWritable;
 
-@SuppressWarnings ("serial")
 public class BaseMap<T> extends TreeMap<String, T> implements JSONWritable {
 	public BaseMap () {
 		super ();
@@ -16,6 +15,11 @@ public class BaseMap<T> extends TreeMap<String, T> implements JSONWritable {
 
 	public BaseMap (Map<String, ? extends T> omap) {
 		this.putAll (omap);
+	}
+
+	public BaseMap<T> putAnd (String key, T value) {
+		this.put (key, value);
+		return this;
 	}
 
 	@Override
