@@ -3,3 +3,4 @@
 .vscode/
 .project
 .classpath
+build.sh
