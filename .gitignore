@@ -3,4 +3,5 @@
 .vscode/
 .project
 .classpath
-build.sh
+
+sbom.sh
