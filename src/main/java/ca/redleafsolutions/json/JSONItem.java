@@ -17,7 +17,7 @@ import org.json.JSONObject;
 import org.json.XML;
 
 public abstract class JSONItem implements Iterable<Object>, JSONWritable {
-	public static final JSONItem.NULL NULL = new JSONItem.NULL ();
+	public static final JSONItem.NULL NULL = new JSONItem.NULL();
 
 	public static JSONItem parse(String str) throws JSONValidationException {
 		if (str == null)
@@ -71,15 +71,16 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 	}
 
 	public static JSONItem fromStream(InputStream is) throws JSONValidationException, IOException {
-		StringBuffer sb = new StringBuffer ();
+		StringBuffer sb = new StringBuffer();
 
 		try {
 			byte[] buff = new byte[1024];
 			int len;
 			while ((len = is.read(buff)) > 0) {
-				sb.append(new String (buff, 0, len));
+				sb.append(new String(buff, 0, len));
 			}
-		} catch (IOException e) { }
+		} catch (IOException e) {
+		}
 
 		return parse(sb.toString());
 	}
@@ -106,8 +107,8 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 
 	public static JSONItem.Array forceJSONArray(JSONItem json) {
 		if (json.isArray())
-			return (JSONItem.Array)json;
-		
+			return (JSONItem.Array) json;
+
 		JSONItem.Array jarr = new JSONItem.Array();
 		jarr.put(json);
 		return jarr;
@@ -151,32 +152,36 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 
 	public abstract boolean has(String key);
 
-	/** Try and get a value from JSON object. If it fails, return the @defaultValue
+	/**
+	 * Try and get a value from JSON object. If it fails, return the @defaultValue
 	 * The type of the value is determined by the type of the defaultValue provided
-	 * @param <T>	type of value
-	 * @param key	the key to the value to retrieve
-	 * @param defaultValue	the default value to return in case key value is not valid (missing or type mismatched)
-	 * @return	The value
+	 * 
+	 * @param <T>          type of value
+	 * @param key          the key to the value to retrieve
+	 * @param defaultValue the default value to return in case key value is not
+	 *                     valid (missing or type mismatched)
+	 * @return The value
 	 */
-	public <T> T tryGet (String key, T defaultValue) {
+	public <T> T tryGet(String key, T defaultValue) {
 		try {
-			@SuppressWarnings ("unchecked")
-			T value = (T)get(key);
+			@SuppressWarnings("unchecked")
+			T value = (T) get(key);
 			if (value == null) {
 				value = defaultValue;
 			}
 			return value;
 		} catch (ClassCastException | JSONValidationException e) {
-			return  defaultValue;
+			return defaultValue;
 		}
 	}
-	public <T> T tryGet (int index, T defaultValue) {
-		return tryGet ("" + index, defaultValue);
+
+	public <T> T tryGet(int index, T defaultValue) {
+		return tryGet("" + index, defaultValue);
 	}
-	
+
 	private JSONItem _getJSONItem(String key, java.lang.Object o) throws JSONValidationException {
 		if (o == null) {
-			return JSONItem.newObject().put(key, JSONItem.NULL);
+			return JSONItem.NULL;
 		}
 
 		if (o instanceof JSONItem) {
@@ -193,6 +198,10 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 
 	public boolean isEmpty() {
 		return length() <= 0;
+	}
+
+	public boolean isNULL() {
+		return false;
 	}
 
 	public JSONItem getJSON(String key) throws JSONValidationException {
@@ -345,16 +354,16 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 		Files.write(Paths.get(file.toURI()), toString(3).getBytes());
 	}
 
-	protected java.lang.Object _convert (java.lang.Object o) {
+	protected java.lang.Object _convert(java.lang.Object o) {
 		if (o instanceof JSONObject)
-			return new JSONItem.Object ((JSONObject)o);
-		
-		if (JSONObject.NULL.equals (o))
+			return new JSONItem.Object((JSONObject) o);
+
+		if (JSONObject.NULL.equals(o))
 			return null;
-		
+
 		if (o instanceof JSONArray)
-			return new JSONItem.Array ((JSONArray)o);
-			
+			return new JSONItem.Array((JSONArray) o);
+
 		return o;
 	}
 
@@ -376,7 +385,7 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 				java.lang.Object v1 = this.get(key);
 				java.lang.Object v2 = that.get(key);
 				if (v1 == null) {
-					if ((v2 != null) && !(v2 instanceof JSONItem.NULL) && !"null".equals (v2)) {
+					if ((v2 != null) && !(v2 instanceof JSONItem.NULL) && !"null".equals(v2)) {
 						return false;
 					}
 				} else if (!v1.equals(v2)) {
@@ -392,163 +401,163 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 	public static class Object extends JSONItem {
 		private Map<String, java.lang.Object> map;
 
-		public Object () {
-			this.map = new TreeMap<> ();
+		public Object() {
+			this.map = new TreeMap<>();
 		}
 
-		private Object (Map<?, ?> map) {
-			this.map = new TreeMap<> ();
-			for (java.lang.Object okey:map.keySet ()) {
-				String key = (String)okey;
-				java.lang.Object value = map.get (okey);
-				this.map.put (key, denormalize (value));
+		private Object(Map<?, ?> map) {
+			this.map = new TreeMap<>();
+			for (java.lang.Object okey : map.keySet()) {
+				String key = (String) okey;
+				java.lang.Object value = map.get(okey);
+				this.map.put(key, denormalize(value));
 			}
 		}
 
-		Object (JSONObject json) {
-			this ();
-			for (Iterator<?> it = json.keys (); it.hasNext ();) {
-				String key = (String)it.next ();
+		Object(JSONObject json) {
+			this();
+			for (Iterator<?> it = json.keys(); it.hasNext();) {
+				String key = (String) it.next();
 				try {
-					put (key, _convert (json.get (key)));
+					put(key, _convert(json.get(key)));
 				} catch (JSONException e) {
 					// this is not reasonable exception for this case the keys are queried
-					throw new RuntimeException (e);
+					throw new RuntimeException(e);
 				}
 			}
 		}
 
 		@Override
-		public boolean isObject () {
+		public boolean isObject() {
 			return true;
 		}
 
-		public JSONItem put (java.lang.Object value) throws JSONValidationException {
-			throw new JSONValidationException ("Must be an Array");
+		public JSONItem put(java.lang.Object value) throws JSONValidationException {
+			throw new JSONValidationException("Must be an Array");
 		}
 
-		public JSONItem put (String key, java.lang.Object value) {
-			map.put (key, normalize (value));
+		public JSONItem put(String key, java.lang.Object value) {
+			map.put(key, normalize(value));
 			return this;
 		}
 
 		@Override
-		public void remove (String key) throws JSONValidationException {
-			map.remove (key);
+		public void remove(String key) throws JSONValidationException {
+			map.remove(key);
 		}
 
 		@Override
-		public void remove (int index) throws JSONValidationException {
-			String key = Integer.toString (index);
-			if (!map.containsKey (key))
-				throw new JSONValidationException.MissingKey (key);
-			remove (key);
+		public void remove(int index) throws JSONValidationException {
+			String key = Integer.toString(index);
+			if (!map.containsKey(key))
+				throw new JSONValidationException.MissingKey(key);
+			remove(key);
 		}
 
 		@Override
-		public java.lang.Object get (String key) throws JSONValidationException {
-			if (!map.containsKey (key))
-				throw new JSONValidationException.MissingKey (key);
-			return map.get (key);
+		public java.lang.Object get(String key) throws JSONValidationException {
+			if (!map.containsKey(key))
+				throw new JSONValidationException.MissingKey(key);
+			return map.get(key);
 		}
 
 		@Override
-		public java.lang.Object get (int index) throws JSONValidationException {
-			String key = Integer.toString (index);
-			if (!map.containsKey (key))
-				throw new JSONValidationException.MissingKey (key);
-			return map.get (key);
+		public java.lang.Object get(int index) throws JSONValidationException {
+			String key = Integer.toString(index);
+			if (!map.containsKey(key))
+				throw new JSONValidationException.MissingKey(key);
+			return map.get(key);
 		}
 
-		private JSONObject toJSONObject () throws JSONException {
-			JSONObject json = new JSONObject ();
-			for (String key:map.keySet ()) {
-				java.lang.Object value = map.get (key);
+		private JSONObject toJSONObject() throws JSONException {
+			JSONObject json = new JSONObject();
+			for (String key : map.keySet()) {
+				java.lang.Object value = map.get(key);
 				if (value instanceof Object) {
-					value = ((Object)value).toJSONObject ();
+					value = ((Object) value).toJSONObject();
 				} else if (value instanceof Array) {
-					value = ((Array)value).toJSONArray ();
+					value = ((Array) value).toJSONArray();
 				} else if (value instanceof JSONWritable) {
 					try {
-						JSONItem j = ((JSONWritable)value).toJSON ();
+						JSONItem j = ((JSONWritable) value).toJSON();
 						if (j instanceof JSONItem.Object) {
-							value = ((JSONItem.Object)j).toJSONObject ();
+							value = ((JSONItem.Object) j).toJSONObject();
 						} else if (j instanceof JSONItem.Array) {
-							value = ((JSONItem.Array)j).toJSONArray ();
+							value = ((JSONItem.Array) j).toJSONArray();
 						}
 					} catch (JSONValidationException e) {
 					}
 				} else if (value == null) {
 					value = JSONItem.NULL;
 				}
-				json.put (key, value);
+				json.put(key, value);
 			}
 			return json;
 		}
 
-		public String _toString () {
+		public String _toString() {
 			try {
-				JSONObject obj = toJSONObject ();
-				return obj.toString ();
+				JSONObject obj = toJSONObject();
+				return obj.toString();
 			} catch (JSONException e) {
 				return "{}";
 			}
 		}
 
 		@Override
-		public String toString () {
+		public String toString() {
 			try {
-				JSONObject obj = toJSONObject ();
-				return obj.toString ();
+				JSONObject obj = toJSONObject();
+				return obj.toString();
 			} catch (JSONException e) {
 				return "{}";
 			}
 		}
 
-		public String toString (int indent) {
+		public String toString(int indent) {
 			try {
-				return toJSONObject ().toString (indent);
+				return toJSONObject().toString(indent);
 			} catch (JSONException e) {
 				return "{}";
 			}
 		}
 
 		@Override
-		public int length () {
-			return map.size ();
+		public int length() {
+			return map.size();
 		}
 
 		@Override
-		public List<? extends java.lang.Object> listKeys () {
-			return new LinkedList<String> (map.keySet ());
+		public List<? extends java.lang.Object> listKeys() {
+			return new LinkedList<String>(map.keySet());
 		}
 
 		@Override
-		public Iterator<?> keys () {
-			return map.keySet ().iterator ();
+		public Iterator<?> keys() {
+			return map.keySet().iterator();
 		}
 
 		@Override
-		public boolean has (String key) {
-			return map.containsKey (key);
+		public boolean has(String key) {
+			return map.containsKey(key);
 		}
 
 		@Override
-		public Iterator<java.lang.Object> iterator () {
-			return map.values ().iterator ();
+		public Iterator<java.lang.Object> iterator() {
+			return map.values().iterator();
 		}
 
-		public Map<String, java.lang.Object> toMap () {
-			Map<String, java.lang.Object> map = new TreeMap<> ();
+		public Map<String, java.lang.Object> toMap() {
+			Map<String, java.lang.Object> map = new TreeMap<>();
 			// System.out.println (this.toString ());
-			for (String key:this.map.keySet ()) {
-				java.lang.Object value = this.map.get (key);
+			for (String key : this.map.keySet()) {
+				java.lang.Object value = this.map.get(key);
 				if (value instanceof JSONItem.Object) {
-					value = ((JSONItem.Object)value).toMap ();
+					value = ((JSONItem.Object) value).toMap();
 				} else if (value instanceof JSONItem.Array) {
-					value = ((JSONItem.Array)value).toList ();
+					value = ((JSONItem.Array) value).toList();
 				}
-				map.put (key, value);
+				map.put(key, value);
 			}
 			return map;
 		}
@@ -557,22 +566,22 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 	public static class Array extends JSONItem {
 		private List<java.lang.Object> list;
 
-		public Array () {
-			list = new LinkedList<java.lang.Object> ();
+		public Array() {
+			list = new LinkedList<java.lang.Object>();
 		}
 
-		private Array (List<?> list) {
-			this ();
-			for (java.lang.Object value:list) {
-				this.list.add (denormalize (value));
+		private Array(List<?> list) {
+			this();
+			for (java.lang.Object value : list) {
+				this.list.add(denormalize(value));
 			}
 		}
-			
-		Array (JSONArray json) {
-			this ();
-			for (int i = 0; i < json.length (); ++i) {
+
+		Array(JSONArray json) {
+			this();
+			for (int i = 0; i < json.length(); ++i) {
 				try {
-					put (_convert (json.get (i)));
+					put(_convert(json.get(i)));
 				} catch (JSONException e) {
 					// ignore this error
 				}
@@ -580,204 +589,213 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 		}
 
 		@Override
-		public boolean isArray () {
+		public boolean isArray() {
 			return true;
 		}
 
 		@Override
-		public JSONItem put (java.lang.Object value) {
-			list.add (normalize (value));
+		public JSONItem put(java.lang.Object value) {
+			list.add(normalize(value));
 			return this;
 		}
 
 		@Override
-		public JSONItem put (String key, java.lang.Object value) throws JSONValidationException {
+		public JSONItem put(String key, java.lang.Object value) throws JSONValidationException {
 			try {
-				list.add (numericIndex (key), normalize (value));
+				list.add(numericIndex(key), normalize(value));
 			} catch (NumberFormatException e) {
-				throw new JSONValidationException ("Array must have numeric keys only. Received " + key);
+				throw new JSONValidationException("Array must have numeric keys only. Received " + key);
 			}
 			return this;
 		}
 
 		@Override
-		public void remove (String key) throws JSONValidationException {
+		public void remove(String key) throws JSONValidationException {
 			try {
-				remove (numericIndex (key));
+				remove(numericIndex(key));
 			} catch (NumberFormatException e) {
-				throw new JSONValidationException ("Array must have numeric keys only. Received " + key);
+				throw new JSONValidationException("Array must have numeric keys only. Received " + key);
 			}
 		}
 
 		@Override
-		public void remove (int index) throws JSONValidationException {
-			if (list.size () <= index)
-				throw new JSONValidationException.MissingKey ("" + index);
-			list.remove (index);
+		public void remove(int index) throws JSONValidationException {
+			if (list.size() <= index)
+				throw new JSONValidationException.MissingKey("" + index);
+			list.remove(index);
 		}
 
-		private JSONArray toJSONArray () throws JSONException {
-			JSONArray json = new JSONArray ();
-			for (java.lang.Object value:list) {
+		private JSONArray toJSONArray() throws JSONException {
+			JSONArray json = new JSONArray();
+			for (java.lang.Object value : list) {
 				if (value instanceof Object) {
-					value = ((Object)value).toJSONObject ();
+					value = ((Object) value).toJSONObject();
 				} else if (value instanceof Array) {
-					value = ((Array)value).toJSONArray ();
+					value = ((Array) value).toJSONArray();
 				} else if (value instanceof JSONWritable) {
 					try {
-						JSONItem j = ((JSONWritable)value).toJSON ();
+						JSONItem j = ((JSONWritable) value).toJSON();
 						if (j instanceof JSONItem.Object) {
-							value = ((JSONItem.Object)j).toJSONObject ();
+							value = ((JSONItem.Object) j).toJSONObject();
 						} else if (j instanceof JSONItem.Array) {
-							value = ((JSONItem.Array)j).toJSONArray ();
+							value = ((JSONItem.Array) j).toJSONArray();
 						}
 					} catch (JSONValidationException e) {
 					}
 				}
-				json.put (value);
+				json.put(value);
 			}
 			return json;
 		}
 
 		@Override
-		public String toString () {
+		public String toString() {
 			try {
-				return toJSONArray ().toString ();
+				return toJSONArray().toString();
 			} catch (JSONException e) {
 				return "[]";
 			}
 		}
 
-		public String toString (int indent) {
+		public String toString(int indent) {
 			try {
-				return toJSONArray ().toString (3);
+				return toJSONArray().toString(3);
 			} catch (JSONException e) {
 				return "[]";
 			}
 		}
 
 		@Override
-		public int length () {
-			return list.size ();
+		public int length() {
+			return list.size();
 		}
 
 		@Override
-		public java.lang.Object get (int index) throws JSONValidationException {
-			if (list.size () <= index)
-				throw new JSONValidationException.MissingKey ("" + index);
-			return list.get (index);
+		public java.lang.Object get(int index) throws JSONValidationException {
+			if (list.size() <= index)
+				throw new JSONValidationException.MissingKey("" + index);
+			return list.get(index);
 		}
 
 		@Override
-		public java.lang.Object get (String key) throws JSONValidationException {
-			return get (numericIndex (key));
+		public java.lang.Object get(String key) throws JSONValidationException {
+			return get(numericIndex(key));
 		}
 
 		@Override
-		public List<?> listKeys () {
-			List<Integer> list = new LinkedList<Integer> ();
-			for (int i = 0; i < this.list.size (); ++i) {
-				list.add (i);
+		public List<?> listKeys() {
+			List<Integer> list = new LinkedList<Integer>();
+			for (int i = 0; i < this.list.size(); ++i) {
+				list.add(i);
 			}
 			return list;
 		}
 
 		@Override
-		public Iterator<?> keys () {
-			return listKeys ().iterator ();
+		public Iterator<?> keys() {
+			return listKeys().iterator();
 		}
 
 		@Override
-		public boolean has (String key) {
+		public boolean has(String key) {
 			try {
-				return numericIndex (key) < length ();
+				return numericIndex(key) < length();
 			} catch (NumberFormatException e) {
 				return false;
 			}
 		}
 
 		@Override
-		public Iterator<java.lang.Object> iterator () {
-			return list.iterator ();
+		public Iterator<java.lang.Object> iterator() {
+			return list.iterator();
 		}
 
-		public List<java.lang.Object> toList () {
-			List<java.lang.Object> list = new LinkedList<> ();
-			for (java.lang.Object value:this.list) {
+		public List<java.lang.Object> toList() {
+			List<java.lang.Object> list = new LinkedList<>();
+			for (java.lang.Object value : this.list) {
 				if (value instanceof JSONItem.Object) {
-					value = ((JSONItem.Object)value).toMap ();
+					value = ((JSONItem.Object) value).toMap();
 				} else if (value instanceof JSONItem.Array) {
-					value = ((JSONItem.Array)value).toList ();
+					value = ((JSONItem.Array) value).toList();
 				}
-				list.add (value);
+				list.add(value);
 			}
 			return list;
 		}
 
 	}
 
-	protected int numericIndex (String key) throws NumberFormatException {
+	protected int numericIndex(String key) throws NumberFormatException {
 		try {
-			return Integer.parseInt (key);
+			return Integer.parseInt(key);
 		} catch (NumberFormatException e) {
-			throw new NumberFormatException ();
+			throw new NumberFormatException();
 		}
 	}
 
-	protected java.lang.Object normalize (java.lang.Object o) {
+	protected java.lang.Object normalize(java.lang.Object o) {
 		if (o instanceof JSONObject) {
-			o = new JSONItem.Object ((JSONObject)o);
+			o = new JSONItem.Object((JSONObject) o);
 		} else if (o instanceof JSONArray) {
-			o = new JSONItem.Array ((JSONArray)o);
+			o = new JSONItem.Array((JSONArray) o);
 		}
 		return o;
 	}
 
-	protected java.lang.Object denormalize (java.lang.Object o) {
+	protected java.lang.Object denormalize(java.lang.Object o) {
 		if (o instanceof Map) {
-			return new Object ((Map<?, ?>)o);
+			return new Object((Map<?, ?>) o);
 		} else if (o instanceof List) {
-			return new Array ((List<?>)o);
+			return new Array((List<?>) o);
 		} else {
 			return o;
 		}
 	}
 
-	public JSONItem cascade (JSONItem other) throws JSONValidationException {
-		for (Iterator<?> it = other.keys (); it.hasNext ();) {
-			String key = (String)it.next ();
-			java.lang.Object value = other.get (key);
+	public JSONItem cascade(JSONItem other) throws JSONValidationException {
+		for (Iterator<?> it = other.keys(); it.hasNext();) {
+			String key = (String) it.next();
+			java.lang.Object value = other.get(key);
 			try {
-				java.lang.Object localvalue = this.get (key);
+				java.lang.Object localvalue = this.get(key);
 				if (value instanceof JSONItem.Object) {
 					if (localvalue instanceof JSONItem.Object) {
-						value = ((JSONItem)localvalue).cascade ((JSONItem)value);
+						value = ((JSONItem) localvalue).cascade((JSONItem) value);
 					}
 				}
-				this.put (key, value);
+				this.put(key, value);
 			} catch (JSONValidationException.MissingKey e) {
-				this.put (key, value);
+				this.put(key, value);
 			}
 		}
 		return this;
 	}
 
-	static public class NULL {
+	static public class NULL extends JSONItem.Object {
 		@Override
-		public String toString () {
+		public boolean isEmpty() {
+			return true;
+		}
+
+		public boolean isNULL() {
+			return true;
+		}
+
+		@Override
+		public String toString() {
 			return "null";
 		}
-		
+
 		@Override
-		public boolean equals (java.lang.Object obj) {
-			if (obj == null) { 
+		public boolean equals(java.lang.Object obj) {
+			if (obj == null) {
 				return true;
 			}
 			if (obj instanceof JSONItem.NULL) {
 				return true;
 			}
 			if (obj instanceof String) {
-				if ("null".equalsIgnoreCase (obj.toString ())) {
+				if ("null".equalsIgnoreCase(obj.toString())) {
 					return true;
 				}
 			}
