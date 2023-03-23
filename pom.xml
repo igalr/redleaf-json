@@ -7,7 +7,7 @@
 
 	<groupId>ca.redleafsolutions</groupId>
 	<artifactId>redleaf-json</artifactId>
-	<version>1.5.1</version>
+	<version>1.5.2</version>
 
 	<name>redleaf-json</name>
 	<url>https://redleafsolutions.ca/packages</url>
@@ -28,7 +28,7 @@
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
-			<version>20220320</version>
+			<version>20230227</version>
 		</dependency>
 
 
