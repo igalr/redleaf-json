@@ -4,7 +4,7 @@ DT_URL="http://localapi.dependencytrack.org:8080"
 
 eval `cat ./sbom-params.sh`
 
-MODULE="redleaf-ishell"
+MODULE="Redleaf JSON"
 VERSION=`git describe --tags`
 mvn clean -Drevision=$VERSION
 mvn org.cyclonedx:cyclonedx-maven-plugin:makeAggregateBom -Drevision=$VERSION
