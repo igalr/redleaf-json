@@ -5,4 +5,5 @@
 .project
 .classpath
 
-sbom.sh
+sbom-params.sh
+src/main/resources/.version*
