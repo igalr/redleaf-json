@@ -2,9 +2,8 @@ package ca.redleafsolutions;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.Base64;
 import java.util.Map;
-
-import org.apache.commons.codec.binary.Base64;
 
 import ca.redleafsolutions.json.JSONItem;
 import ca.redleafsolutions.json.JSONReadWritable;
@@ -87,7 +86,7 @@ public class ObjectMap extends BaseMap<Object> implements JSONReadWritable {
 		return search;
 	}
 	public String toSearchStringB64 () {
-		return new String(Base64.encodeBase64(toSearchString().getBytes()));
+		return Base64.getEncoder().encodeToString(toSearchString().getBytes());
 	}
 
 	public void fromSearchString (String searchString) {
@@ -102,7 +101,7 @@ public class ObjectMap extends BaseMap<Object> implements JSONReadWritable {
 	}
 
 	public void fromSearchStringB64 (String encoded) {
-		String decoded = new String(Base64.decodeBase64(encoded));
+		String decoded = new String (Base64.getDecoder().decode(encoded));
 		fromSearchString(decoded);
 	}
 }

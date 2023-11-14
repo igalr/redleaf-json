@@ -20,16 +20,16 @@
 
 	<dependencies>
 		<!-- https://mvnrepository.com/artifact/commons-codec/commons-codec -->
-		<dependency>
+		<!-- <dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
 			<version>1.16.0</version>
-		</dependency>
+		</dependency> -->
 		<!-- https://mvnrepository.com/artifact/org.json/json -->
 		<dependency>
 			<groupId>org.json</groupId>
 			<artifactId>json</artifactId>
-			<version>20230618</version>
+			<version>20231013</version>
 		</dependency>
 
 
@@ -49,7 +49,7 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.8.0</version>
 				<configuration>
-					<release>11</release>
+					<release>17</release>
 				</configuration>
 			</plugin>
 			<plugin>

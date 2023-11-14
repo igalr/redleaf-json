@@ -1,8 +1,7 @@
 package ca.redleafsolutions;
 
+import java.util.Base64;
 import java.util.Map;
-
-import org.apache.commons.codec.binary.Base64;
 
 import ca.redleafsolutions.json.JSONItem;
 import ca.redleafsolutions.json.JSONReadable;
@@ -50,7 +49,7 @@ public class StringMap extends BaseMap<String> implements JSONReadable {
 		return search;
 	}
 	public String toSearchStringB64 () {
-		return new String(Base64.encodeBase64(toSearchString().getBytes()));
+		return Base64.getEncoder().encodeToString(toSearchString().getBytes());
 	}
 
 	public void fromSearchString (String searchString) {
@@ -70,7 +69,7 @@ public class StringMap extends BaseMap<String> implements JSONReadable {
 	}
 
 	public void fromSearchStringB64 (String encoded) {
-		String decoded = new String(Base64.decodeBase64(encoded));
+		String decoded = new String (Base64.getDecoder().decode(encoded));
 		fromSearchString(decoded);
 	}
 }
