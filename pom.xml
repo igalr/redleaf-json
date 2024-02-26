@@ -13,7 +13,7 @@
 	<url>https://redleafsolutions.ca/packages</url>
 
 	<properties>
-		<maven.compiler.target>1.11</maven.compiler.target>
+		<maven.compiler.target>1.17</maven.compiler.target>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<revision>UNKNOWN</revision>
 	</properties>
@@ -93,4 +93,12 @@
 			</plugin>
 		</plugins>
 	</build>
+
+	<distributionManagement>
+		<repository>
+			<id>github</id>
+			<name>GitHub Packages</name>
+			<url>https://maven.pkg.github.com/igalr/redleaf-json</url>
+		</repository>
+	</distributionManagement>
 </project>
