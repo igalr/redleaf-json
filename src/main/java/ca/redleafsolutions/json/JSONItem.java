@@ -162,7 +162,7 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 	 *                     valid (missing or type mismatched)
 	 * @return The value
 	 */
-	public <T> T tryGet(String key, T defaultValue) {
+	public <T> T get(String key, T defaultValue) {
 		try {
 			@SuppressWarnings("unchecked")
 			T value = (T) get(key);
@@ -175,8 +175,8 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 		}
 	}
 
-	public <T> T tryGet(int index, T defaultValue) {
-		return tryGet("" + index, defaultValue);
+	public <T> T get(int index, T defaultValue) {
+		return get("" + index, defaultValue);
 	}
 
 	private JSONItem _getJSONItem(String key, java.lang.Object o) throws JSONValidationException {
@@ -227,8 +227,19 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 		return _getString(key, get(key));
 	}
 
+	public String getString(String key, String defaultValue) {
+		try {
+			return _getString(key, get(key));
+		} catch (JSONValidationException e) {
+			return defaultValue;
+		}
+	}
+
 	public String getString(int index) throws JSONValidationException {
 		return _getString("" + index, get(index));
+	}
+	public String getString(int index, String defaultValue) {
+		return getString("" + index, defaultValue);
 	}
 
 	private int _getInt(String key, java.lang.Object o) throws JSONValidationException {
@@ -249,9 +260,19 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 	public int getInt(String key) throws JSONValidationException {
 		return _getInt(key, get(key));
 	}
+	public int getInt(String key, int defaultValue) {
+		try {
+			return _getInt(key, get(key));
+		} catch (JSONValidationException e) {
+			return defaultValue;
+		}
+	}
 
 	public int getInt(int index) throws JSONValidationException {
 		return _getInt("" + index, get(index));
+	}
+	public int getInt(int index, int defaultValue) {
+		return getInt("" + index, defaultValue);
 	}
 
 	private long _getLong(String key, java.lang.Object o) throws JSONValidationException {
@@ -272,9 +293,19 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 	public long getLong(String key) throws JSONValidationException {
 		return _getLong(key, get(key));
 	}
+	public long getLong(String key, long defaultValue) throws JSONValidationException {
+		try {
+			return _getLong(key, get(key));
+		} catch (JSONValidationException e) {
+			return defaultValue;
+		}
+	}
 
 	public long getLong(int index) throws JSONValidationException {
 		return _getLong("" + index, get(index));
+	}
+	public long getLong(int index, long defaultValue) throws JSONValidationException {
+		return getLong("" + index, defaultValue);
 	}
 
 	private double _getDouble(String key, java.lang.Object o) throws JSONValidationException {
@@ -296,9 +327,19 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 	public double getDouble(String key) throws JSONValidationException {
 		return _getDouble(key, get(key));
 	}
+	public double getDouble(String key, double defaultValue) {
+		try {
+			return _getDouble(key, get(key));
+		} catch (JSONValidationException e) {
+			return defaultValue;
+		}
+	}
 
 	public double getDouble(int index) throws JSONValidationException {
 		return _getDouble("" + index, get(index));
+	}
+	public double getDouble(int index, double defaultValue) {
+		return getDouble("" + index, defaultValue);
 	}
 
 	private boolean _getBoolean(String key, java.lang.Object o) throws JSONValidationException {
@@ -330,9 +371,18 @@ public abstract class JSONItem implements Iterable<Object>, JSONWritable {
 	public boolean getBoolean(String key) throws JSONValidationException {
 		return _getBoolean(key, get(key));
 	}
-
+	public boolean getBoolean(String key, boolean defaultValue) {
+		try {
+			return _getBoolean(key, get(key));
+		} catch (JSONValidationException e) {
+			return defaultValue;
+		}
+	}
 	public boolean getBoolean(int index) throws JSONValidationException {
 		return _getBoolean("" + index, get(index));
+	}
+	public boolean getBoolean(int index, boolean defaultValue) {
+		return getBoolean("" + index, defaultValue);
 	}
 
 	public abstract int length();

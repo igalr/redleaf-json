@@ -190,7 +190,6 @@ public class JSONUtils {
 		}
 	}
 
-	@SuppressWarnings ("unchecked")
 	private static Object toJSONValue (Object o, int depth) throws JSONValidationException {
 		if (depth > 2)
 			return o;

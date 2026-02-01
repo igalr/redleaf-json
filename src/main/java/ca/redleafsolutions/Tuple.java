@@ -4,13 +4,15 @@ import ca.redleafsolutions.json.JSONItem;
 import ca.redleafsolutions.json.JSONValidationException;
 import ca.redleafsolutions.json.JSONWritable;
 
-public class Pair<T1, T2> implements JSONWritable {
+public class Tuple<T1, T2, T3> implements JSONWritable {
 	private T1 one;
 	private T2 two;
+	private T3 three;
 
-	public Pair (T1 one, T2 two) {
+	public Tuple (T1 one, T2 two, T3 three) {
 		this.one = one;
 		this.two = two;
+		this.three = three;
 	}
 
 	public T1 getOne () {
@@ -21,9 +23,13 @@ public class Pair<T1, T2> implements JSONWritable {
 		return two;
 	}
 
+	public T3 getThree () {
+		return three;
+	}
+
 	@Override
 	public String toString () {
-		return "[" + one + "," + two + "]";
+		return "[" + one + "," + two + "," + three + "]";
 	}
 
 	@Override
@@ -31,6 +37,7 @@ public class Pair<T1, T2> implements JSONWritable {
 		JSONItem json = JSONItem.newArray();
 		json.put(one);
 		json.put(two);
+		json.put(three);
 		return json;
 	}
 }

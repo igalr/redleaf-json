@@ -23,6 +23,13 @@ public class BaseList<T> extends LinkedList<T> implements JSONWritable {
 		this.addAll (Arrays.asList (items));
 	}
 
+	public T get(int index, T defaultValue) {
+		T value = this.get (index);
+		if (value == null)
+			return defaultValue;
+		return value;
+	}
+
 	public BaseList<T> addAnd (T item) {
 		this.add (item);
 		return this;

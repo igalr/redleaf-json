@@ -30,18 +30,18 @@ public class ObjectList extends BaseList<Object> implements JSONReadWritable {
 		return (T)get(index);
 	}
 
-	public <T> T tryGet (int index, T defaultValue) {
-		try {
-			@SuppressWarnings ("unchecked")
-			T value = (T)get(index);
-			if (value == null) {
-				value = defaultValue;
-			}
-			return value;
-		} catch (ClassCastException | IndexOutOfBoundsException e) {
-			return  defaultValue;
-		}
-	}
+	// public <T> T get (int index, T defaultValue) {
+	// 	try {
+	// 		@SuppressWarnings ("unchecked")
+	// 		T value = (T)get(index);
+	// 		if (value == null) {
+	// 			value = defaultValue;
+	// 		}
+	// 		return value;
+	// 	} catch (ClassCastException | IndexOutOfBoundsException e) {
+	// 		return  defaultValue;
+	// 	}
+	// }
 
 	public String join (String delimiter) {
 		String s = "";

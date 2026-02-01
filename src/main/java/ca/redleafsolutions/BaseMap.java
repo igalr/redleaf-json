@@ -22,6 +22,14 @@ public class BaseMap<T> extends TreeMap<String, T> implements JSONWritable {
 		return this;
 	}
 
+	public T get(String key, T defaultValue) {
+		T value = this.get (key);
+		if (value == null) {
+			return defaultValue;
+		}
+		return value;
+	}
+
 	@Override
 	public JSONItem toJSON () throws JSONValidationException {
 		JSONItem json = JSONItem.newObject ();
