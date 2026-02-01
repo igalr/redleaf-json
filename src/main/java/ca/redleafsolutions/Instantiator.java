@@ -12,7 +12,7 @@ public class Instantiator<T> {
 	}
 
 	public T newInstance (JSONItem json) throws InstantiationException, JSONValidationException {
-		return instantiate (json.getString("class"), json.tryGet("params", (JSONItem)null));
+		return instantiate (json.getString("class"), json.get("params", (JSONItem)null));
 	}
 
 	public T instantiate (String clstr, JSONItem json) throws InstantiationException {
